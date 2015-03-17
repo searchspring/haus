@@ -1,0 +1,19 @@
+name: "Your Name"
+email: email@address.com
+
+environments:
+  mysql_latest:
+  redis_latest:
+  elasticsearch_1.3.4:
+    variables:
+      name: "ESTest1"
+      clustername: "test-cluster1"
+      port: 9201
+  elasticsearch_1.1.1:
+    variables:
+      name: "ESTest2"
+      clustername: "test-cluster2"
+      port: 9202
+  consul:
+  registrator:
+

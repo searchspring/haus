@@ -1,0 +1,13 @@
+docker:
+  {{.Variables.name}}ES:
+    image: searchspring/elasticsearch:consul-config-{{.Version}}
+    dns:
+      - 172.17.42.1
+      - 8.8.8.8
+    ports:
+      - "{{.Variables.port}}:9200"
+    expose:
+      - "9200"
+    environment:
+      - SERVICE_9200_NAME=es
+      - CLUSTERNAME={{.Variables.clustername}}

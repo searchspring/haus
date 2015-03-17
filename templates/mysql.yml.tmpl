@@ -1,0 +1,14 @@
+docker:
+  mysql:
+    image: mysql:{{.Version}}
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    dns:
+      - 172.17.42.1
+      - 8.8.8.8
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - SERVICE_3306_NAME=mysql
+    net: "bridge"

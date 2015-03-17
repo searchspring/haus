@@ -1,0 +1,13 @@
+docker:
+  registrator:
+    image: progrium/registrator
+    dns:
+      - 172.17.42.1
+      - 8.8.8.8
+    entrypoint:
+      - "registrator"
+      - "-internal"
+      - "consul://consul.service.consul:8500"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    net: "bridge"

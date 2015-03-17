@@ -1,0 +1,14 @@
+docker:
+  consul:
+    image: progrium/consul
+    ports:
+      - "8300:8300"
+      - "8301:8301/udp"
+      - "8302:8302/udp"
+      - "8500:8500"
+      - "8600:53/udp"
+      - "172.17.42.1:53:53/udp"
+    dns: 
+      - 8.8.8.8
+    command: -bootstrap-expect 1 -advertise 172.17.42.1 -server -ui-  dir /ui
+    net: "bridge"

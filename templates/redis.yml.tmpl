@@ -1,0 +1,13 @@
+docker:
+  redis:
+    image: redis:{{.Version}}
+    dns:
+      - 172.17.42.1
+      - 8.8.8.8
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    environment:
+      - SERVICE_6379_NAME=redis
+    net: "bridge"

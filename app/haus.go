@@ -1,0 +1,125 @@
+package haus
+
+import(
+	"fmt"
+	"strings"
+)
+
+type Haus struct{
+	Config Config
+}
+
+type semaphore chan error
+
+func (h *Haus) Run() error {
+	c := h.Config
+	
+	repotsaryml := &RepoYml{
+		Signature: Signature{
+			Name: c.Name,
+			Email: c.Email,
+		},
+	}
+	dockeryml := &DockerYml{}
+	// Create environments
+	thrnum := len(c.Environments)
+	sem := make(semaphore, thrnum)
+	for k := range c.Environments {
+		// Thread environment creatation
+		go h.createEnv(k,dockeryml,repotsaryml,sem)
+	}
+	// Wait for threads to finish
+	for i := 0; i < thrnum; i++ { 
+		err := <-sem
+		if err != nil {
+			return err
+		}
+	}
+	// Create Yaml files
+	_,err := repotsaryml.WriteYml(c.Path+"/repotsar.yml")
+	if err != nil {
+		return err
+	}
+	_,err = dockeryml.WriteYml(c.Path+"/docker-compose.yml")
+	if err != nil {
+		return err
+	}
+	return nil
+		
+}
+
+func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml, sem semaphore) error {
+	// check requirements
+	e := h.Config.Environments[env]
+	for _,v := range e.Requirements {
+		if _, ok := h.Config.Environments[v]; ok != true {
+			err := fmt.Errorf("%#v requires %#v and it is not defined.",env,v)
+			sem <-err
+			return err
+		}
+	}
+	name,version := nameSplit(env)
+	// Create Cfgs from templates
+	tmpl := &Template{
+		Path: h.Config.Path,
+		Name: name,
+		Branch: version,
+		Version: version,
+		Variables: e.Variables,	
+	}
+	// Extract RepoTsar Cfgs from template
+	repos,err := tmpl.RepoTsarCfgs()
+	if err != nil {
+		sem <-err
+		return err
+	}
+	// Extract Docker Cfgs from template
+	docker,err := tmpl.DockerCfgs()
+	if err != nil {
+		sem <-err
+		return err
+	}
+	// Clone docker build repos first to ensure they are cloned into 
+	// empty directories
+	for dkey,dval := range docker {
+		if dval.Build != "" {
+			repo := repos[dkey]
+			err = repo.CloneRepo(dkey)
+			if err != nil {
+				sem <-err
+				return err
+			}	
+	
+		} 
+	}
+	// Clone other repos after cloning docker build repos
+	for rkey,rval := range repos {
+		if _,ok := docker[rkey]; ok {
+		} else {
+			err = rval.CloneRepo(rkey)
+			if err != nil {
+				sem <-err
+				return err
+			}			
+		}
+	}
+	// Add Cfgs
+	dockeryml.AddCfg(docker)
+	repotsaryml.AddCfg(repos)
+	sem <-nil
+	return nil
+}
+
+// Split string with _ into two strings if there's a _
+func nameSplit(n string) (string, string) {
+		// split name and version or branch
+		s := strings.Split(n,"_")
+		var version string
+		var name string
+		if len(s) > 1 {
+			name, version = s[0], s[1]
+		} else {
+			name = s[0]
+		}
+		return name, version
+}
