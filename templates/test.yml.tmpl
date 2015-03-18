@@ -1,12 +1,12 @@
 repotsar:
   haus:
     url: ssh://git@github.com/SearchSpring/haus.git
-    path: {{.Path}}
+    path: {{.Path}}/src/haus
     branch: {{.Branch}}
 
 docker:
   test:
-    build: {{.Path}}/
+    build: ./src/haus
     ports:
         - "80:80"
     expose:
@@ -15,8 +15,8 @@ docker:
         - 172.17.42.1
         - 8.8.8.8
     volumes:
-        - src/:/app/src/
+        - {{.Path}}/src/:/app/src/
     environment:
-        - SERVICE_80_NAME=smc
-        - SERVICE_TAG=smc
+        - SERVICE_80_NAME=test
+        - SERVICE_TAG=test
     net: "bridge"
