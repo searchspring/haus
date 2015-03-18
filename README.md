@@ -61,38 +61,6 @@ go get gopkg.in/yaml.v2
 go get github.com/SearchSpring/RepoTsar
 ``` 
 
-
-Usage
-=====
-
-Edit the repotsar.yml to configure you signature and repos.
-
-```YAML
-signature:
-    name: "Your Name"
-    email: email@address.com
-
-repos:
-    git2go:
-        url: ssh://git@github.com/libgit2/git2go.git
-        path: /tmp/git2go
-        branch: master
-
-```
-(Reminder: YAML format is space indented, not tab)
-
-Running repotsar without arguments will concurrently and idempotently create paths if needed, clone repos if needed, and git pull.
-
-### Options
-```RepoTsar --repos repo1,repo2,repo3 ```
-
-Supply a comma seperated list of defined repos from your repotsar.yml to act on.
-
-```RepoTsar --branch BranchName ```
-
-Will in addition create local branches in all repos being acted on.
-
-
 Usage
 =====
 
