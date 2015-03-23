@@ -8,6 +8,7 @@ func TestTemplateStruct(t *testing.T){
 
 	tmpl := &Template{
 		Path: "/tmp/test",
+		Pwd: "..",
 		Name: "test",
 		Branch: "master",
 		Version: "1.1.1",
@@ -19,6 +20,7 @@ func TestTemplateStruct(t *testing.T){
 	if err != nil {
 		t.Error(err)
 	}
+
 	_,err = tmpl.DockerCfgs()
 	if err != nil {
 		t.Error(err)

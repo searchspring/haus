@@ -1,52 +1,67 @@
 package haus
 
 import(
+	"io/ioutil"
+	"gopkg.in/yaml.v2"
 )
 
 type DockerCfg struct {
-	Image string `yaml:"image,omitempty"`
 	Build string `yaml:"build,omitempty"`
-	Command string `yaml:"build,omitempty"`
-	Links []string `yaml:"build,omitempty"`
-	External_links []string `yaml:"build,omitempty"`
+	Cap_add []string `yaml:"cap_add,omitempty"`
+	Cap_drop []string `yaml:"cap_drop,omitempty"`
+	Command string `yaml:"command,omitempty"`
+	Cpu_shares string `yaml:"cpu_shares,omitempty"`
 	Dns []string `yaml:"dns,omitempty"`
-	Dns_server []string `yaml:"build,omitempty"`
-	Ports []string `yaml:"ports,omitempty"`
-	Volumes []string `yaml:"volumes,omitempty"`
-	Volumes_from []string `yaml:"build,omitempty"`
-	Env_file []string `yaml:"build,omitempty"`
-	Net string `yaml:"build,omitempty"`
-	Cap_add []string `yaml:"build,omitempty"`
-	Cap_drop []string `yaml:"build,omitempty"`
-	Expose []string `yaml:"expose,omitempty"`
+	Dns_server []string `yaml:"dns_server,omitempty"`
+	Domainname string `yaml:"domainname,omitempty"`
+	Entrypoint []string `yaml:"entrypoint,omitempty"`
+	Env_file []string `yaml:"env_file,omitempty"`
 	Environment []string `yaml:"environment,omitempty"`
-	Working_dir string `yaml:"build,omitempty"`
-	Entrypoint string `yaml:"build,omitempty"`
-	User string `yaml:"build,omitempty"`
-	Hostname string `yaml:"build,omitempty"`
-	Domainname string `yaml:"build,omitempty"`
-	Mem_limit string `yaml:"build,omitempty"`
-	Privileged string `yaml:"build,omitempty"`
-	Restart string `yaml:"build,omitempty"`
-	Stdin_open string `yaml:"build,omitempty"`
-	Tty string `yaml:"build,omitempty"`
-	Cpu_shares string `yaml:"build,omitempty"`
+	Expose []string `yaml:"expose,omitempty"`
+	External_links []string `yaml:"external_links,omitempty"`
+	Hostname string `yaml:"hostname,omitempty"`
+	Image string `yaml:"image,omitempty"`
+	Links []string `yaml:"links,omitempty"`
+	Mem_limit string `yaml:"mem_limit,omitempty"`
+	Net string `yaml:"net,omitempty"`
+	Ports []string `yaml:"ports,omitempty"`
+	Privileged string `yaml:"privileged,omitempty"`
+	Restart string `yaml:"restart,omitempty"`
+	Stdin_open string `yaml:"stdin_open,omitempty"`
+	Tty string `yaml:"tty,omitempty"`
+	User string `yaml:"user,omitempty"`
+	Volumes []string `yaml:"volumes,omitempty"`
+	Volumes_from []string `yaml:"volumes_from,omitempty"`
+	Working_dir string `yaml:"working_dir,omitempty"`
 }
 
 type DockerYml struct {
-	Yaml
 	Cfg map[string]DockerCfg
 }
 
 func (y *DockerYml) AddCfg(d map[string]DockerCfg) {
 	for k,v := range d {
 		if y.Cfg == nil {
-			y.Cfg = make(map[string]DockerCfg)
+			y.Cfg = d 
+		} else {
+			y.Cfg[k] = v
 		}
-		y.Cfg[k] = v
 	}
 }
 
 func (y *DockerYml) Cfgs() map[string]DockerCfg {
 	return y.Cfg
+}
+
+// Write Yaml file
+func (y *DockerYml) WriteYml(filename string) (string,error) {
+	yaml,err := yaml.Marshal(y.Cfg)
+	if err != nil {
+		return "",err
+	}
+	err = ioutil.WriteFile(filename, yaml, 0644)
+	if err != nil {
+		return "",err
+	}
+	return string(yaml[:]),err	
 }

@@ -4,18 +4,19 @@ import(
 	"bytes"
 	"io/ioutil"
 	"text/template"
-	
+
 	"gopkg.in/yaml.v2"
 )
 
 type Template struct {
 	Path string
+	Pwd string
 	Image string
 	Name string
 	Branch string
 	Version string
 	Variables map[string]string
-	Parsed ParsedTmpl
+	Parsed *ParsedTmpl
 	
 
 }
@@ -26,49 +27,44 @@ type ParsedTmpl struct {
 }
 
 func (t *Template) Parse() (ParsedTmpl, error){
-	if &t.Parsed != nil {
-	 	return t.Parsed, nil
+	if t.Parsed != nil {
+		return *t.Parsed,nil
 	}
-	source, err := ioutil.ReadFile("./templates/"+t.Name+".yml.tmpl")
+	// Read template
+	templatefile := t.Pwd+"/templates/"+t.Name+".yml.tmpl"
+	source, err := ioutil.ReadFile(templatefile)
 	if err != nil {
-		return t.Parsed, err
+		return ParsedTmpl{}, err
 	}
+
+	// Parse template
 	template,err := template.New(t.Name).Parse(string(source[:]))
 	if err != nil {
-		return t.Parsed, err
+		return ParsedTmpl{}, err
 	}
+	// 
 	buf := &bytes.Buffer{}
 	err = template.Execute(buf,t)
 	if err != nil {
-		return t.Parsed,err
+		return ParsedTmpl{},err
 	}
-	parsed := ParsedTmpl{}
+	parsed := &ParsedTmpl{}
 	err = yaml.Unmarshal(buf.Bytes(),parsed)
 	if err != nil {
-		return t.Parsed,err
+		return *parsed,err
 	}
 	t.Parsed = parsed
-	return parsed, nil
+	return *parsed, nil
 
 }
 
 func (t *Template) DockerCfgs() (map[string]DockerCfg, error) {
-	if &t.Parsed == nil {
-		_,err := t.Parse()
-		if err != nil {
-			return nil,err
-		}
-	}
-	return t.Parsed.Docker,nil 
+	parsed,err := t.Parse()
+	return parsed.Docker,err 
 }
 
 func (t *Template) RepoTsarCfgs() (map[string]Repo, error) {
-	if &t.Parsed == nil {
-		_,err := t.Parse()
-		if err != nil {
-			return nil,err
-		}
-	}
-	return t.Parsed.Repotsar,nil
+	parsed,err := t.Parse()
+	return parsed.Repotsar,err
 }
 

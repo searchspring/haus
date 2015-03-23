@@ -16,4 +16,7 @@ environments:
       port: 9202
   consul:
   registrator:
+    requirements:
+      - consul
+
 

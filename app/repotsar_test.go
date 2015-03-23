@@ -4,6 +4,7 @@ import(
 	"io/ioutil"
 	"os"
 	"testing"
+	"regexp"
 )
 
 func TestRepoStruct(t *testing.T) {
@@ -39,9 +40,21 @@ func TestRepoYmlStruct(t *testing.T){
 	repoyml := &RepoYml{}
 	repocfg := map[string]Repo{ "test": repo}
 	repoyml.AddCfg(repocfg)
+
+	// Write Yaml
 	_,err = repoyml.WriteYml(testpath+"/test.yml")
 	if err != nil {
 		t.Error(err)
 	}
-
+	yamlfile,err := ioutil.ReadFile(testpath+"/test.yml")
+	if err != nil {
+		t.Error(err)
+	}
+	match,err := regexp.Match(".*github.*",yamlfile)
+	if err != nil {
+		t.Error(err)
+	}
+	if match != true {
+		t.Error("Yamlfile missing contents")
+	}
 }

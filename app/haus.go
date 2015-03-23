@@ -35,6 +35,7 @@ func (h *Haus) Run() error {
 			return err
 		}
 	}
+
 	// Create Yaml files
 	_,err := repotsaryml.WriteYml(c.Path+"/repotsar.yml")
 	if err != nil {
@@ -62,11 +63,13 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 	// Create Cfgs from templates
 	tmpl := &Template{
 		Path: h.Config.Path,
+		Pwd: h.Config.Pwd,
 		Name: name,
 		Branch: version,
 		Version: version,
 		Variables: e.Variables,	
 	}
+
 	// Extract RepoTsar Cfgs from template
 	repos,err := tmpl.RepoTsarCfgs()
 	if err != nil {
@@ -79,6 +82,8 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 		sem <-err
 		return err
 	}
+
+
 	// Clone docker build repos first to ensure they are cloned into 
 	// empty directories
 	for dkey,dval := range docker {

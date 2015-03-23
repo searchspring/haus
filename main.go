@@ -18,22 +18,22 @@ func main(){
 	flag.StringVar(&path, "path", "./hauscfg", "Path to generate files in")
 	config,err := haus.ReadConfig(configfile)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("\n%s",err)
 	}
 	config.Path,err = filepath.Abs(path)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("\n%s",err)
 	}
 	_,err = fileutils.CreatePath(config.Path)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("\n%s",err)
 	}
 	haus := haus.Haus{
 		Config: *config,
 	}
 	err = haus.Run()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("\n%s",err)
 	}
 	
 	

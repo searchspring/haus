@@ -4,6 +4,7 @@ import(
 	"testing"
 	"os"
 	"io/ioutil"
+	"fmt"
 )
 
 func TestHausStruct( t *testing.T){
@@ -24,8 +25,9 @@ func TestHausStruct( t *testing.T){
 		Path: testpath,
 		Environments: map[string]Environment{ "test": env},
 	}
+	config.Pwd = ".."
+	fmt.Printf("%#v", config)
 	haus := &Haus{ Config: config }
-
 	err = haus.Run()
 	if err != nil {
 		t.Error(err)
