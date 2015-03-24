@@ -83,7 +83,6 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 		return err
 	}
 
-
 	// Clone docker build repos first to ensure they are cloned into 
 	// empty directories
 	for dkey,dval := range docker {

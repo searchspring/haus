@@ -1,12 +1,11 @@
 repotsar:
-  haus:
-    url: ssh://git@github.com/SearchSpring/haus.git
-    path: {{.Path}}/src/haus
+  test:
+    url: ssh://git@github.com/SearchSpring/docker-elasticsearch
+    path: {{.Path}}/src/docker-elasticsearch
     branch: {{.Branch}}
-
 docker:
   test:
-    build: ./src/haus
+    build: ./src/docker-elasticsearch
     ports:
         - "80:80"
     expose:
@@ -14,8 +13,6 @@ docker:
     dns:
         - 172.17.42.1
         - 8.8.8.8
-    volumes:
-        - {{.Path}}/src/:/app/src/
     environment:
         - SERVICE_80_NAME=test
         - SERVICE_TAG=test
