@@ -12,7 +12,7 @@ type DockerCfg struct {
 	Command string `yaml:"command,omitempty"`
 	Cpu_shares string `yaml:"cpu_shares,omitempty"`
 	Dns []string `yaml:"dns,omitempty"`
-	Dns_search []string `yaml:"dns_server,omitempty"`
+	Dns_search []string `yaml:"dns_search,omitempty"`
 	Domainname string `yaml:"domainname,omitempty"`
 	Entrypoint []string `yaml:"entrypoint,omitempty"`
 	Env_file []string `yaml:"env_file,omitempty"`
