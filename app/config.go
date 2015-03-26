@@ -6,6 +6,7 @@ import(
 	"os"
 )
 
+// Config represents the configurations in haus config file.
 type Config struct {
 	Name string
 	Email string
@@ -14,6 +15,8 @@ type Config struct {
 	Environments map[string]Environment
 }
 
+// ReadConfig reads the config file from the supplied full path and
+// returns a Config and error.
 func ReadConfig(filename string)(*Config, error) {
 	config := &Config{}
 	source, err := ioutil.ReadFile(filename)

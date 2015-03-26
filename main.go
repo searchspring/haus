@@ -12,7 +12,6 @@ import(
 var configfile string
 var path string
 
-
 func main(){
 	flag.StringVar(&configfile, "config", "haus.yml", "YAML config file")
 	flag.StringVar(&path, "path", "./hauscfg", "Path to generate files in")
