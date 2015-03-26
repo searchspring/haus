@@ -8,7 +8,7 @@ import(
 )
 
 
-// Expand ~ to value of ENV HOME
+// expandTilde expands ~ to value of ENV HOME
 func expandTilde(f string) string {
 	if strings.HasPrefix(f, "~"+string(filepath.Separator)) {
 		return os.Getenv("HOME") + f[1:]
@@ -16,7 +16,7 @@ func expandTilde(f string) string {
 	return f
 }
 
-// Check for path and create if it doesn't exist
+// CreatePath check for path and create if it doesn't exist
 func CreatePath(path string) (string, error) {
 	// Get a abs path
 	absPath,err := filepath.Abs(expandTilde(path))
@@ -39,7 +39,7 @@ func CreatePath(path string) (string, error) {
 	return absPath, nil
 }
 
-// Check for symlink and create it if doesn't exist
+// CreateSymlink check for symlink and create it if doesn't exist
 func CreateSymlink(opath string, npath string) (string, error) {
 	// Get clean abs paths
 	cleanOpath := filepath.Clean(expandTilde(opath))

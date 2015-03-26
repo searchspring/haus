@@ -4,7 +4,7 @@ import(
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
 )
-
+// DockerCfg represents a single docker-compose config.
 type DockerCfg struct {
 	Build string `yaml:"build,omitempty"`
 	Cap_add []string `yaml:"cap_add,omitempty"`
@@ -35,10 +35,13 @@ type DockerCfg struct {
 	Working_dir string `yaml:"working_dir,omitempty"`
 }
 
+// DockerYml represents a collection of docker-compose configs to be turned into YAML.
 type DockerYml struct {
 	Cfg map[string]DockerCfg
 }
 
+
+// AddCfg adds a map[string]DockerCfg to DockerYml.
 func (y *DockerYml) AddCfg(d map[string]DockerCfg) {
 	for k,v := range d {
 		if y.Cfg == nil {
@@ -49,11 +52,13 @@ func (y *DockerYml) AddCfg(d map[string]DockerCfg) {
 	}
 }
 
+// Cfgs returns map[string]DockerCfg from DockerYml.
 func (y *DockerYml) Cfgs() map[string]DockerCfg {
 	return y.Cfg
 }
 
-// Write Yaml file
+// WriteYml writes out Cfgs to yaml file.  Hand it full path
+// to yaml file you wish to write out.  Returns string of yaml text.  
 func (y *DockerYml) WriteYml(filename string) (string,error) {
 	yaml,err := yaml.Marshal(y.Cfg)
 	if err != nil {

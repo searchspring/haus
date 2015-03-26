@@ -8,6 +8,7 @@ import(
 	"gopkg.in/yaml.v2"
 )
 
+// Template represents a single instance of a haus template file.
 type Template struct {
 	Path string
 	Pwd string
@@ -21,11 +22,13 @@ type Template struct {
 
 }
 
+// ParsedTmpl represents a collection of Repo and DockerCfgs created from haus templates.
 type ParsedTmpl struct {
 	Repotsar map[string]Repo
 	Docker map[string]DockerCfg
 }
 
+// Parse processes template files to create Repo and DockerCfgs, returns a ParsedTmpl.
 func (t *Template) Parse() (ParsedTmpl, error){
 	if t.Parsed != nil {
 		return *t.Parsed,nil
@@ -58,11 +61,13 @@ func (t *Template) Parse() (ParsedTmpl, error){
 
 }
 
+// DockerCfgs returns DockerCfgs stored in Template.
 func (t *Template) DockerCfgs() (map[string]DockerCfg, error) {
 	parsed,err := t.Parse()
 	return parsed.Docker,err 
 }
 
+// RepoTsarCfgs returns RepoTsarCfgs stored in Template.
 func (t *Template) RepoTsarCfgs() (map[string]Repo, error) {
 	parsed,err := t.Parse()
 	return parsed.Repotsar,err

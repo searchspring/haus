@@ -1,3 +1,5 @@
+// Package haus reads a yaml file describing docker architecture and
+// generates from templates docker-compose and RepoTsar files.
 package haus
 
 import(
@@ -5,12 +7,14 @@ import(
 	"strings"
 )
 
+// Haus represents an instance of the haus application.
 type Haus struct{
 	Config Config
 }
 
 type semaphore chan error
 
+// Run starts the process of the haus application and returns error.
 func (h *Haus) Run() error {
 	c := h.Config
 	
@@ -49,6 +53,7 @@ func (h *Haus) Run() error {
 		
 }
 
+// createEnv create a single environment define in the haus config.  Returns error.
 func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml, sem semaphore) error {
 	// check requirements
 	e := h.Config.Environments[env]
@@ -114,7 +119,7 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 	return nil
 }
 
-// Split string with _ into two strings if there's a _
+// nameSplit splits string with _ into two strings if there's a '_'.
 func nameSplit(n string) (string, string) {
 		// split name and version or branch
 		s := strings.Split(n,"_")
