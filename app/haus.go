@@ -97,7 +97,12 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 			if err != nil {
 				sem <-err
 				return err
-			}	
+			}
+			err = repo.CreateLink()
+			if err != nil {
+				sem <-err
+				return err
+			}
 	
 		} 
 	}
@@ -106,6 +111,11 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 		if _,ok := docker[rkey]; ok {
 		} else {
 			err = rval.CloneRepo(rkey)
+			if err != nil {
+				sem <-err
+				return err
+			}
+			err = rval.CreateLink()
 			if err != nil {
 				sem <-err
 				return err

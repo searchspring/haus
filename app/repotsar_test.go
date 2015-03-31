@@ -18,12 +18,20 @@ func TestRepoStruct(t *testing.T) {
 		Path: testpath+"/testrepo",
 		URL: "ssh://git@github.com/libgit2/git2go.git",
 		Branch: "master",
+		Link: testpath+"/testrepo-link",
 	}
 	err = repo.CloneRepo("test")
 	if err != nil {
 		t.Error(err)
 	}
-
+	err = repo.CreateLink()
+	if err != nil {
+		t.Error(err)
+	}
+	_,err = os.Lstat(testpath+"/testrepo-link")
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestRepoYmlStruct(t *testing.T){
@@ -36,6 +44,7 @@ func TestRepoYmlStruct(t *testing.T){
 		Path: testpath+"/testrepo",
 		URL: "ssh://git@github.com/libgit2/git2go.git",
 		Branch: "master",
+		Link: testpath+"/testrepo-link",
 	}
 	repoyml := &RepoYml{}
 	repocfg := map[string]Repo{ "test": repo}

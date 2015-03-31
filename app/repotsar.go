@@ -1,8 +1,9 @@
 package haus
 
 import(
-	"io/ioutil"
+	"os"
 	"fmt"
+	"io/ioutil"
 
 	"gopkg.in/yaml.v2"
 	"github.com/SearchSpring/RepoTsar/gitutils"
@@ -19,6 +20,7 @@ type Repo struct {
 	URL string
 	Path string
 	Branch string
+	Link string
 
 }
 
@@ -34,6 +36,20 @@ func (r *Repo) CloneRepo(n string) error {
 	_,err := cloneinfo.CloneRepo()
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+// CreateLink creates symlink defined in Repo.  Returns error.
+func (r *Repo) CreateLink() error {
+	if r.Link == "" {
+		return nil
+	} else {
+		fmt.Printf("Symlinking %s to %#v\n",r.Link,r.Path)
+		err := os.Symlink(r.Path,r.Link)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
