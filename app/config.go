@@ -3,6 +3,8 @@ package haus
 import(
 	"os"
 	"fmt"
+	"strings"
+	"path/filepath"
 	"io/ioutil"
 
 	"gopkg.in/yaml.v2"
@@ -75,10 +77,13 @@ func ReadConfig(filename string, usrcfgfile string, branch string )(*Config, err
 // readCfg reads a file and parses it for yaml and unmarshals it into config.
 func readCfg(cfgfile string, config *Config) (error) {
 	// Read config from user home a overrite anything
-	_,err := os.Stat(cfgfile)
+
+
+	_,err := os.Stat(expandTilde(cfgfile))
 	if err != nil {
+		fmt.Printf("Config file %#v missing\n", cfgfile)
 	} else {
-		cfg,err := ioutil.ReadFile(cfgfile)
+		cfg,err := ioutil.ReadFile(expandTilde(cfgfile))
 		if err != nil {
 			return err
 		}
@@ -88,4 +93,12 @@ func readCfg(cfgfile string, config *Config) (error) {
 		}
 	}
 	return nil
+}
+
+// expandTilde expands ~ to value of ENV HOME
+func expandTilde(f string) string {
+	if strings.HasPrefix(f, "~"+string(filepath.Separator)) {
+		return os.Getenv("HOME") + f[1:]
+	}
+	return f
 }
