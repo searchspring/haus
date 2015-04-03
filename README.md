@@ -149,7 +149,17 @@ docker:
     command: "npm install --production&& npm start --production"
 ```
 
+# User Config
 
+Haus looks in ~/.hauscfg.yml for user configuration.  This a YAML file that should look like the following.
+
+```YAML
+name: "Your Name"
+email: email@domain.com
+hausrepo: git@github.com:SearchSpring/haus.git
+```
+
+The name and email settings are used as your git signature.  The hausrepo setting should be the git address of a repo where you have a haus.yml and templates for haus.  If you use the haus command in a empty directory the repo specified in hausrepo will be cloned into the current directory and then haus will use that haus.yml config.  You may also specify -branch with the haus command to checkout a specific branch of the repo you configured hausrepo for.
 
 
 License and Author
