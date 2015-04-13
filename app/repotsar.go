@@ -45,10 +45,13 @@ func (r *Repo) CreateLink() error {
 	if r.Link == "" {
 		return nil
 	} else {
-		fmt.Printf("Symlinking %s to %#v\n",r.Link,r.Path)
-		err := os.Symlink(r.Path,r.Link)
+		_,err := os.Lstat(r.Link)
 		if err != nil {
-			return err
+			fmt.Printf("Symlinking %s to %#v\n",r.Link,r.Path)
+			err = os.Symlink(r.Path,r.Link)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
