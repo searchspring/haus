@@ -17,6 +17,7 @@ func main(){
 	flag.StringVar(&configfile, "config", "haus.yml", "YAML config file")
 	flag.StringVar(&path, "path", "./hauscfg", "Path to generate files in")
 	flag.StringVar(&branch, "branch", "master", "git branch for hausrepo")
+	flag.Parse()
 	
 	config,err := haus.ReadConfig(configfile,"~/.hauscfg.yml", branch)
 	if err != nil {
