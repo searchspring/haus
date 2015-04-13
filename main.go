@@ -15,7 +15,7 @@ var path string
 var branch string
 var version bool
 const (
-	versioninfo = "v0.1.2"
+	versioninfo = "v0.1.3"
 )
 
 func main(){
