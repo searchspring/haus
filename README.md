@@ -57,6 +57,19 @@ go get github.com/SearchSpring/RepoTsar
 Usage
 =====
 
+# ~/.hauscfg.yml
+
+If haus is run in an empty directory it will pull the config from ~/.hauscfg.yml.  The following is an example of what that file should look like.
+
+```yaml
+name: "Your Name"
+email: email@address.com
+hausrepo: git@bitbucket.org:yourrepo/haus-yaml.git
+```
+
+The **hausrepo** option should be configured with a repo containing haus config files.  Haus will **one time** checkout this repo and then run haus.  Anytime a haus.yml file exists in the current directory, this setting is ignored.  If you pass *-branch* **branchname** as an argument, haus will checkout that specific branch.
+
+
 # haus.yml
 Haus will look in the current directory for a haus.yml file.  This file defines the architecture you want to build.  Here is an example:
 
