@@ -1,2 +1,7 @@
-haus
+/haus
+hauscfg
 *.out
+*.pkg
+*/bin/*
+.DS_Store
+*.deb

@@ -1,0 +1,9 @@
+Package: haus
+Version: 0.1.2
+Section: base
+Priority: optional
+Architecture: amd64
+Depends: 
+Maintainer: Greg Hellings <greg@thesub.net>
+Description:
+  Keep your haus in order. Haus orchestrates local docker development environments. With a simple Yaml config, and a series of templates, haus will dynamically build RepoTsar and Docker-Compose config files for you.
