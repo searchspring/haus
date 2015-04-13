@@ -6,7 +6,7 @@ Keep your haus in order.  Haus orchestrates local docker development environment
 Installing
 ==========
 
-There are static binary packages for OSX in releases.  If you would like to build haus yourself, follow the instructions below.
+There are static binary packages for OSX and Debian in releases.  If you would like to build haus yourself, follow the instructions below.
 
 # Requirements
 This project is written in go.
@@ -38,14 +38,7 @@ cmake-gui -> /Applications/CMake.app/Contents/bin/cmake-gui
 cmakexbuild -> /Applications/CMake.app/Contents/bin/cmakexbuild
 ```
 
-#### Building libgit2 and git2go
-
-```bash
-go get -d gopkg.in/libgit2/git2go.v22
-cd $GOPATH/src/gopkg.in/libgit2/git2go.v22
-git submodule update --init 
-make install
-```
+Follow instructions at https://github.com/libgit2/git2go to build libgit2 and git2go.
 
 #### Installing yaml
 
