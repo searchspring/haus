@@ -5,6 +5,7 @@ package haus
 import(
 	"fmt"
 	"strings"
+	"time"
 )
 
 // Haus represents an instance of the haus application.
@@ -31,6 +32,9 @@ func (h *Haus) Run() error {
 	for k := range c.Environments {
 		// Thread environment creatation
 		go h.createEnv(k,dockeryml,repotsaryml,sem)
+		// Sleep between thread creation so git doesn't step on it's self
+		time.Sleep(50 * time.Millisecond)
+
 	}
 	// Wait for threads to finish
 	for i := 0; i < thrnum; i++ { 
