@@ -67,21 +67,9 @@ func ReadConfig(filename string, usrcfgfile string, branch string, path string, 
 		return config, err
 	}
 
-	// Pass variables from command line into config
-	for k, v := range variables {
-		if config.Variables == nil {
-			config.Variables = make(map[string]string)
-		}
-		config.Variables = variables
-		for name, env := range config.Environments {
-			if _,ok := env.Variables[k]; ok {
-				config.Environments[name].Variables[k] = v
-			} 
-		} 
-	}
-
 	// Process default variables
 	for k, v := range config.Variables {
+		fmt.Printf("Setting defaults for %#v\n", k)
 		for name, env := range config.Environments {
 			if _, ok := env.Variables[k]; ok {
 			} else {
@@ -94,6 +82,16 @@ func ReadConfig(filename string, usrcfgfile string, branch string, path string, 
 		}
 	}
 
+	// Pass variables from command line into config
+	for k, v := range variables {
+		for name, env := range config.Environments {
+			if _,ok := env.Variables[k]; ok {
+				config.Environments[name].Variables[k] = v
+			} 
+		} 
+	}
+
+	// Set path	
 	config.Path = path
 
 	// Store the current path
