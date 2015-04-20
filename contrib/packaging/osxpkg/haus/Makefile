@@ -1,7 +1,10 @@
-VERSION=0.1.3
+VERSION=0.1.4
 
 buildmake:
+	rm -rf Haus
 	mkdir -p Haus/bin/
+	rm -rf pkg1
+	mkdir pkg1
 	cp ../../../../haus ./Haus/bin/
 	pkgbuild --root Haus \
     		--identifier org.haus.command \

@@ -1,7 +1,7 @@
 FROM buildpack-deps:jessie-scm
 
 ENV GO_VER go1.4.2.linux-amd64
-ENV HAUS_VER 0.1.3
+ENV HAUS_VER 0.1.4
 ENV GOPATH /app/go
 ENV GOROOT /usr/local/go
 ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
