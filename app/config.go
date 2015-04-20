@@ -69,7 +69,6 @@ func ReadConfig(filename string, usrcfgfile string, branch string, path string, 
 
 	// Process default variables
 	for k, v := range config.Variables {
-		fmt.Printf("Setting defaults for %#v\n", k)
 		for name, env := range config.Environments {
 			if _, ok := env.Variables[k]; ok {
 			} else {
