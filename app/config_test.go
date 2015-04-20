@@ -11,19 +11,19 @@ import (
 func TestReadConfig(t *testing.T) {
 
 	// Test missing config
-	_,err := ReadConfig("bogusbogus","","master")
+	_,err := ReadConfig("bogusbogus","","master", "./hauscfg", make(map[string]string) )
 	if err == nil {
 		t.Error("Expected missing file error, didn't get it.")
 	}
 
 	// Test broken config
-	_,err = ReadConfig("config.go","", "master")
+	_,err = ReadConfig("config.go","", "master", "./hauscfg", make(map[string]string) )
 	if err == nil {
 		t.Error("Expected yaml error, didn't get it.")
 	}
 
 	// Test normal config
-	config,err := ReadConfig("../haus.yml","", "master")
+	config,err := ReadConfig("../haus.yml","", "master", "./hauscfg", make(map[string]string) )
 	if err != nil {
 		t.Error(err)
 	}
@@ -75,7 +75,7 @@ func TestReadConfig(t *testing.T) {
 	}
 	defer os.Chdir(pwd)
 
-	config,err = ReadConfig("bogus", usrcfgfile, "master")
+	config,err = ReadConfig("bogus", usrcfgfile, "master", "./hauscfg", make(map[string]string))
 	if err != nil {
 		t.Error(err)
 	} 
@@ -85,7 +85,7 @@ func TestReadConfig(t *testing.T) {
 		t.Error("User config failed, expected Testy Testerson, got ",config.Name)
 	}
 
-	config,err = ReadConfig("./haus.yml", usrcfgfile, "master")
+	config,err = ReadConfig("./haus.yml", usrcfgfile, "master", "./hauscfg", make(map[string]string) )
 	if err != nil {
 		t.Error(err)
 	}

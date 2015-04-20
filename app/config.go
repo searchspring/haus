@@ -19,11 +19,12 @@ type Config struct {
 	Pwd string
 	Hausrepo string
 	Environments map[string]Environment
+	Variables map[string]string
 }
 
 // ReadConfig reads the config file from the supplied full path and
 // returns a Config and error.
-func ReadConfig(filename string, usrcfgfile string, branch string )(*Config, error) {
+func ReadConfig(filename string, usrcfgfile string, branch string, path string, variables map[string]string )(*Config, error) {
 	config := &Config{}
 
 	// If the configfile is missing, try to check it out from git repo
@@ -65,7 +66,36 @@ func ReadConfig(filename string, usrcfgfile string, branch string )(*Config, err
 	if err != nil {
 		return config, err
 	}
-	
+
+	// Pass variables from command line into config
+	for k, v := range variables {
+		if config.Variables == nil {
+			config.Variables = make(map[string]string)
+		}
+		config.Variables = variables
+		for name, env := range config.Environments {
+			if _,ok := env.Variables[k]; ok {
+				config.Environments[name].Variables[k] = v
+			} 
+		} 
+	}
+
+	// Process default variables
+	for k, v := range config.Variables {
+		for name, env := range config.Environments {
+			if _, ok := env.Variables[k]; ok {
+			} else {
+				if env.Variables == nil {
+					env.Variables = make(map[string]string)
+				}
+				env.Variables[k] = v
+				config.Environments[name] = env
+			}
+		}
+	}
+
+	config.Path = path
+
 	// Store the current path
 	config.Pwd,err = os.Getwd()
 	if err != nil {
