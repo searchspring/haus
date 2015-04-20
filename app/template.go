@@ -17,6 +17,7 @@ type Template struct {
 	Branch string
 	Version string
 	Variables map[string]string
+	Env map[string]string
 	Parsed *ParsedTmpl
 	
 

@@ -4,6 +4,7 @@ package haus
 
 import(
 	"fmt"
+	"os"
 	"strings"
 	"time"
 )
@@ -76,7 +77,8 @@ func (h *Haus) createEnv(env string, dockeryml *DockerYml, repotsaryml *RepoYml,
 		Name: name,
 		Branch: version,
 		Version: version,
-		Variables: e.Variables,	
+		Variables: e.Variables,
+		Env: envMap(),
 	}
 
 	// Extract RepoTsar Cfgs from template
@@ -146,3 +148,14 @@ func nameSplit(n string) (string, string) {
 		}
 		return name, version
 }
+
+// envMap returns a map[string]string of Environment variables
+func envMap() map[string]string {
+	env := make(map[string]string)
+	envstrings := os.Environ()
+	for i := range envstrings {
+		kv := strings.Split(envstrings[i],"=")
+		env[kv[0]] = kv[1]
+	}
+	return env
+} 
