@@ -1,7 +1,7 @@
 haus
 ========
 
-Keep your haus in order.  Haus orchestrates local docker development environments.  With a simple Yaml config, and a series of templates, haus will dynamically build RepoTsar and Docker-Compose config files for you. 
+Keep your haus in order.  Haus gives you an easy way to recreate your docker development environments from scratch and share them with others.  With a simple Yaml config, and a series of templates, haus will dynamically build RepoTsar and Docker-Compose config files for you.   
 
 Installing
 ==========
@@ -74,9 +74,17 @@ The **hausrepo** option should be configured with a repo containing haus config 
 Haus will look in the current directory for a haus.yml file.  This file defines the architecture you want to build.  Here is an example:
 
 ```yaml
+
+# Git Signature Info
 name: "Your Name"
 email: email@address.com
 
+# Global Defaults
+variables:
+  dns1: 172.17.42.1
+  dns2: 8.8.8.8
+
+# Environment Definitions
 environments:
   mysql_latest:
   redis_latest:
@@ -94,7 +102,6 @@ environments:
   registrator:
     requirements:
         - consul
-
 ```
 
 The 'name' and 'email' fields will be used in your git signature for any checkouts that are required.  Each element under 'environments' corresponds to a template in a templates directory in the current path.  The template file name will match the element name up to an `_`, plus .yml.tmpl as a suffix.  Example, in the above config, the template file for elasticsearch_1.3.4 will be
@@ -111,8 +118,8 @@ docker:
   {{.Variables.name}}ES:
     image: searchspring/elasticsearch:consul-config-{{.Version}}
     dns:
-      - 172.17.42.1
-      - 8.8.8.8
+      - {{.Variables.dns1}}
+      - {{.Variables.dns2}}
     ports:
       - "{{.Variables.port}}:9200"
     expose:
@@ -143,8 +150,8 @@ docker:
     expose:
         - "2368"
     dns:
-        - 172.17.42.1
-        - 8.8.8.8
+        - {{.Variables.dns1}}
+        - {{.Variables.dns2}}
     volumes:
         - {{.Path}}/src/docker-node/src/ghost/:/usr/src/ghost/
     environment:
@@ -157,16 +164,48 @@ docker:
 
 # User Config
 
-Haus looks in ~/.hauscfg.yml for user configuration.  This a YAML file that should look like the following.
+Haus looks in ~/.hauscfg.yml for user configuration.  This a YAML file that should look like the following.  The variables section in this file will override the global defaults section in the haus.yml.
 
 ```YAML
 name: "Your Name"
 email: email@domain.com
 hausrepo: git@github.com:SearchSpring/haus.git
+
+variables:
+  dns1: 172.17.42.1
+  dns2: 8.8.8.8
+
 ```
 
 The name and email settings are used as your git signature.  The hausrepo setting should be the git address of a repo where you have a haus.yml and templates for haus.  If you use the haus command in a empty directory the repo specified in hausrepo will be cloned into the current directory and then haus will use that haus.yml config.  You may also specify -branch with the haus command to checkout a specific branch of the repo you configured hausrepo for.
 
+# Syntax
+
+## Usage of haus:
+```
+  -branch="master": git branch for hausrepo
+  -config="haus.yml": YAML config file
+  -path="./hauscfg": Path to generate files in
+  -variables=map[]: variables passed to templates
+  -version=false: haus version
+```
+
+### branch
+  This option allows you to specify what branch haus should use when cloning from the hausrepo specified in your ~/.hauscfg.yml
+
+### config
+  This option allows you to tell haus to use a haus.yml file in a different location other than current directory.
+
+### path
+  This option specifies a different location for haus config files to be created in rather than ./hauscfg.
+
+### variables
+  Using this option allows you to override variables in the templates from the command line.  Example:
+  ```bash
+  bash-3.2$ haus -variables dns1=1.1.1.1 -variables dns2=2.2.2.2
+  ```
+### version
+  Prints the version of haus and exits.
 
 License and Author
 ==================
