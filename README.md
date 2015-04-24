@@ -162,6 +162,14 @@ docker:
     command: "npm install --production&& npm start --production"
 ```
 
+Inside the templates the following variables may be used
+
+* .Path - This will be the value supplied to the command line arguement -path (default ./hauscfg)
+* .Version / .Branch - This will be any value after the first `_` in the name of the environment
+* .Variables - Any variable defined under the `variables` section of the enviroment definition
+* .Env - Any shell environment variables 
+
+
 # User Config
 
 Haus looks in ~/.hauscfg.yml for user configuration.  This a YAML file that should look like the following.  The variables section in this file will override the global defaults section in the haus.yml.
