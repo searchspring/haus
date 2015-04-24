@@ -27,14 +27,35 @@ type Config struct {
 func ReadConfig(filename string, usrcfgfile string, branch string, path string, variables map[string]string )(*Config, error) {
 	config := &Config{}
 
+	// Check for current directory config
+	curdir,err := filepath.Abs("./")
+	if err != nil {
+		return config, err
+	}
+	curdircfg := fmt.Sprintf("%s/.hauscfg.yaml", curdir)
+	_,err = os.Stat(curdircfg)
+	has_curdircfg :=  false
+	if err == nil {
+		has_curdircfg = true
+	} 
+
 	// If the configfile is missing, try to check it out from git repo
-	_,err := os.Stat(filename)
+	_,err = os.Stat(filename)
 	if err != nil {
 		// Get the url for the git repo from user config
 		err = readCfg(usrcfgfile,config)
 		if err != nil {
 			return config,err
 		}
+
+		// If there's a .hauscfg.yaml in the current directory, let it supercede the usrcfgfile 
+		if has_curdircfg {
+			err = readCfg(curdircfg, config)
+			if err != nil {
+				return config,err
+			}
+		}
+
 		// If the url is defined, clone the repo
 		if config.Hausrepo != "" {
 			cloneinfo := &gitutils.CloneInfo{
@@ -65,6 +86,14 @@ func ReadConfig(filename string, usrcfgfile string, branch string, path string, 
 	err = readCfg(usrcfgfile, config)
 	if err != nil {
 		return config, err
+	}
+
+	// If there's a .hauscfg.yaml in the current directory, let it supercede the usrcfgfile
+	if has_curdircfg {
+		err = readCfg(curdircfg, config)
+		if err != nil {
+			return config,err
+		}
 	}
 
 	// Process default variables
