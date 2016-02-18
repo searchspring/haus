@@ -16,7 +16,7 @@ func TestRepoStruct(t *testing.T) {
 
 	repo := Repo{
 		Path: testpath+"/testrepo",
-		URL: "ssh://git@github.com/libgit2/git2go.git",
+		URL: "https://github.com/libgit2/git2go.git",
 		Branch: "master",
 		Link: testpath+"/testrepo-link",
 	}
