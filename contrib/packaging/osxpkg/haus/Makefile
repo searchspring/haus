@@ -1,11 +1,11 @@
-VERSION=0.1.5
+VERSION=0.1.6
 
 buildmake:
 	rm -rf Haus
-	mkdir -p Haus/bin/
+	mkdir -p Haus/usr/local/bin
 	rm -rf pkg1
 	mkdir pkg1
-	cp ../../../../haus ./Haus/bin/
+	cp ../../../../haus ./Haus/usr/local/bin/
 	pkgbuild --root Haus \
     		--identifier org.haus.command \
     		--version $(VERSION) \
@@ -15,4 +15,4 @@ buildmake:
               --resources ./resources \
               --package-path ./pkg1 \
               --version $(VERSION) \
-              ../Haus-v$(VERSION)-amd64-osx10.8.pkg
+              ../Haus-v$(VERSION)-amd64-osx10.11.pkg

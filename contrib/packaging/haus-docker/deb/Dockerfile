@@ -1,7 +1,7 @@
 FROM buildpack-deps:jessie-scm
 
 ENV GO_VER go1.4.2.linux-amd64
-ENV HAUS_VER 0.1.4
+ENV HAUS_VER 0.1.6
 ENV GOPATH /app/go
 ENV GOROOT /usr/local/go
 ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
@@ -30,21 +30,35 @@ RUN \
 		libssh2-1-dev \
 		libssh2-1 \
 		libssl-dev \
-		zlibc 
+		openssh-client \
+		openssh-server \
+		zlibc \
+		git \
+		libcurl4-openssl-dev
 
 
-# Install git2go
-RUN \
-	go get -d gopkg.in/libgit2/git2go.v22 && \
+# Install git2go and libgit2
+RUN 	go get -d gopkg.in/libgit2/git2go.v22 && \
 	cd $GOPATH/src/gopkg.in/libgit2/git2go.v22 && \
 	git checkout next && \
 	git submodule update --init && \
+	./script/build-libgit2-static.sh && \ 
+	cd vendor/libgit2/build/ && \
+	make && \
+	make install && \
+	cd ../../../ && \
+	make test && \
 	make install
 
-RUN \
-	go get github.com/Searchspring/haus && \
-	go get github.com/Searchspring/RepoTsar
+ENV PKG_CONFIG_PATH=$GOPATH/src/gopkg.in/libgit2/git2go/vendor/libgit2/build/ 
 
+# Install yaml,RepoTsar, and haus
+RUN \
+	go get gopkg.in/yaml.v2 && \ 
+	go get github.com/SearchSpring/RepoTsar && \
+	go get github.com/Searchspring/haus 
+
+# Build Package
 RUN \
 	mkdir -p /app/deb && \
 	cd /app/deb/ && \
