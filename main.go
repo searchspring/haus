@@ -16,7 +16,7 @@ var path string
 var branch string
 var version bool
 const (
-	versioninfo = "v0.1.5"
+	versioninfo = "v0.1.7"
 )
 
 type vars map[string]string
