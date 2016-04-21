@@ -1,0 +1,9 @@
+#!/bin/bash
+
+eval $(ssh-agent -s)
+ssh-add
+mkdir -p $HAUSPATH
+cd $HAUSPATH
+haus
+
+exec $@
