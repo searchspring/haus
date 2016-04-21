@@ -1,7 +1,11 @@
 haus
 ========
 
-Keep your haus in order.  Haus gives you an easy way to recreate your docker development environments from scratch and share them with others.  With a simple Yaml config, and a series of templates, haus will dynamically build RepoTsar and Docker-Compose config files for you.   
+Keep your haus in order.  Haus gives you an easy way to recreate your docker development environments from scratch and share them with others.  With a simple Yaml config, and a series of templates, haus will dynamically build RepoTsar and Docker-Compose config files for you. 
+
+Docker
+======
+Instead of building or installing haus, it's simplest to run haus via docker.  Follow instructions here https://hub.docker.com/r/searchspring/haus/ 
 
 Installing
 ==========
