@@ -12,3 +12,4 @@ docker:
       - MYSQL_ROOT_PASSWORD=root
       - SERVICE_3306_NAME=mysql
     net: "bridge"
+    command: mysqld --max-allowed-packet=4M
