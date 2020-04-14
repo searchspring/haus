@@ -55,7 +55,7 @@ go get gopkg.in/yaml.v2
 #### Installing RepoTsar
 
 ```bash
-go get github.com/SearchSpring/RepoTsar
+go get github.com/searchspring/repo-tsar
 ``` 
 
 Usage
@@ -181,7 +181,7 @@ Haus looks in ~/.hauscfg.yml for user configuration.  This a YAML file that shou
 ```YAML
 name: "Your Name"
 email: email@domain.com
-hausrepo: git@github.com:SearchSpring/haus.git
+hausrepo: git@github.com:searchspring/haus.git
 
 variables:
   dns1: 172.17.42.1
