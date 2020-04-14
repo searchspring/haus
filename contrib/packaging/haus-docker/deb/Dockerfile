@@ -55,8 +55,8 @@ ENV PKG_CONFIG_PATH=$GOPATH/src/gopkg.in/libgit2/git2go/vendor/libgit2/build/
 # Install yaml,RepoTsar, and haus
 RUN \
 	go get gopkg.in/yaml.v2 && \ 
-	go get github.com/SearchSpring/RepoTsar && \
-	go get github.com/Searchspring/haus 
+	go get github.com/searchspring/repo-tsar && \
+	go get github.com/searchspring/haus 
 
 # Build Package
 RUN \
