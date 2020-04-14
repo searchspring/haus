@@ -8,7 +8,7 @@ import(
 	"io/ioutil"
 
 	"gopkg.in/yaml.v2"
-	"github.com/SearchSpring/RepoTsar/gitutils"
+	"github.com/searchspring/repo-tsar/gitutils"
 )
 
 // Config represents the configurations in haus config file.
