@@ -6,7 +6,7 @@ import(
 	"io/ioutil"
 
 	"gopkg.in/yaml.v2"
-	"github.com/SearchSpring/RepoTsar/gitutils"
+	"github.com/searchspring/repo-tsar/gitutils"
 )
 
 // Signature represents the values to be use in a git signature.
