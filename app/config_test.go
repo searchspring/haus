@@ -47,7 +47,7 @@ func TestReadConfig(t *testing.T) {
 		"name": "Testy Testerson",
 		"email": "Test@test.com",
 		"path": "/my/test/path",
-		"hausrepo": "https://git@github.com/SearchSpring/haus.git",
+		"hausrepo": "https://git@github.com/searchspring/haus.git",
 	}
 	yaml,err := yaml.Marshal(usrCfg)
 	if err != nil {
