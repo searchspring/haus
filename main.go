@@ -7,8 +7,8 @@ import(
 	"strings"
 	"path/filepath"
 
-	"github.com/SearchSpring/haus/fileutils"
-	"github.com/SearchSpring/haus/app"
+	"github.com/searchspring/haus/fileutils"
+	"github.com/searchspring/haus/app"
 )
 
 var configfile string
